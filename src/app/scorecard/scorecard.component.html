@@ -1,0 +1,48 @@
+
+<form [formGroup]="scoreForm" (ngSubmit)="obtainScore()">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+        
+  <!-- Position Column -->
+  <ng-container matColumnDef="hole">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let element"> {{element.hole}}
+      </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="par">
+    <th mat-header-cell *matHeaderCellDef> Par </th>
+    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('par')"> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="strokeIndex">
+    <th mat-header-cell *matHeaderCellDef> Stroke Index </th>
+    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('strokeIndex')"> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="netScore">
+    <th mat-header-cell *matHeaderCellDef> Net Score </th>
+    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('netScore')"> </td> 
+  </ng-container>
+
+  <ng-container matColumnDef="points">
+    <th mat-header-cell *matHeaderCellDef> Points </th>
+    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('points')"> </td>
+  </ng-container> 
+
+  <ng-container matColumnDef="score">
+    <th mat-header-cell *matHeaderCellDef> Score </th>
+    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('score')"> </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+ 
+</table>
+<button mat-raised-button color="primary" type="submit">Submit</button>
+</form>
+
+
