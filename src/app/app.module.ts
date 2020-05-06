@@ -9,14 +9,18 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SatPopoverModule } from '@ncstate/sat-popover';
+import { InlineEditComponent } from './inline-edit/inline-edit.component';
+import { AppMaterialModules } from './material.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ScorecardComponent,
+    InlineEditComponent,
     
   ],
   imports: [
@@ -29,7 +33,10 @@ import {MatInputModule} from '@angular/material';
     HttpClientModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    SatPopoverModule,
+    AppMaterialModules,
+    FormsModule
     
     
   ],

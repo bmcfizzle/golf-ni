@@ -1,5 +1,5 @@
 import { Hole } from './hole';
 
-export class Holes{
+export interface Holes{
     holes: Hole[];
 }

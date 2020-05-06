@@ -1,48 +1,58 @@
 
-<form [formGroup]="scoreForm" (ngSubmit)="obtainScore()">
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  
-  <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
-        
-  <!-- Position Column -->
-  <ng-container matColumnDef="hole">
-    <th mat-header-cell *matHeaderCellDef> No. </th>
-    <td mat-cell *matCellDef="let element"> {{element.hole}}
-      </td>
-  </ng-container>
+<div style="padding: 32px">
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="par">
-    <th mat-header-cell *matHeaderCellDef> Par </th>
-    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('par')"> </td>
-  </ng-container>
+  <div class="example-container mat-elevation-z8">
+    <mat-table #table [dataSource]="dataSource">
 
-  <ng-container matColumnDef="strokeIndex">
-    <th mat-header-cell *matHeaderCellDef> Stroke Index </th>
-    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('strokeIndex')"> </td>
-  </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="hole">
+        <mat-header-cell *matHeaderCellDef> Hole </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.hole}} </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="netScore">
-    <th mat-header-cell *matHeaderCellDef> Net Score </th>
-    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('netScore')"> </td> 
-  </ng-container>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="par">
+        <mat-header-cell *matHeaderCellDef> Par </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.par}} </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="points">
-    <th mat-header-cell *matHeaderCellDef> Points </th>
-    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('points')"> </td>
-  </ng-container> 
+      <ng-container matColumnDef="strokeIndex">
+        <mat-header-cell *matHeaderCellDef> Stroke index </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.strokeIndex}} </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="score">
-    <th mat-header-cell *matHeaderCellDef> Score </th>
-    <td mat-cell *matCellDef="let element"> <input arrow-div [formControl]="element.get('score')"> </td>
-  </ng-container>
+      <ng-container matColumnDef="netScore">
+        <mat-header-cell *matHeaderCellDef> Net Score </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.netScore}} </mat-cell>
+      </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
- 
-</table>
-<button mat-raised-button color="primary" type="submit">Submit</button>
-</form>
+      <ng-container matColumnDef="points">
+        <mat-header-cell *matHeaderCellDef> Points </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.points}} </mat-cell>
+      </ng-container>
 
+      <!-- Comment Column -->
+      <ng-container matColumnDef="score">
+        <mat-header-cell *matHeaderCellDef> Score </mat-header-cell>
+        <mat-cell *matCellDef="let element" satPopoverAnchor #anchor=satPopoverAnchor (click)="anchor.popover.toggle()">
+          <ng-container *ngIf="element.score">
+            {{element.score}}
+          </ng-container>
+          <span class="add-comment" *ngIf="!element.score">
+            Add a score
+          </span>
+
+          <sat-popover [anchor]="anchor" (closed)="update(element, $event)">
+            <inline-edit [value]="element.score"></inline-edit>
+          </sat-popover>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <button mat-raised-button color="primary" (click)="obtainScore()">Update</button>
+  </div>
+
+</div>
 
