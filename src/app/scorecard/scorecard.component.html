@@ -16,6 +16,11 @@
         <mat-cell *matCellDef="let element"> {{element.par}} </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="yardage">
+        <mat-header-cell *matHeaderCellDef> Yardage </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.yardage}} </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="strokeIndex">
         <mat-header-cell *matHeaderCellDef> Stroke index </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.strokeIndex}} </mat-cell>
@@ -51,8 +56,47 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
-    <button mat-raised-button color="primary" (click)="obtainScore()">Update</button>
+    
   </div>
 
+    <br><br>
+
+    <form (ngSubmit)="obtainScore()"
+            [formGroup]="scoreForm">
+
+    <div class="example-container"[class.mat-elevation-z8]="true">
+
+      <mat-grid-list cols="2" rowHeight="4:1">
+        <mat-grid-tile>Please enter your handicap: </mat-grid-tile>
+        <mat-grid-tile> 
+          <mat-form-field appearance="standard">
+          <mat-label>Handicap</mat-label>
+          <input matInput type="number" formControlName="handicap" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="scoreForm.controls['handicap'].hasError('min')">
+            Please enter a handicap of 0 or greater
+          </mat-error>
+          <mat-error *ngIf="scoreForm.controls['handicap'].hasError('max')">
+            Please enter a handicap of 72 or less
+          </mat-error>
+          <mat-error *ngIf="scoreForm.controls['handicap'].hasError('required')">
+            Please enter a handicap
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      </mat-grid-list>
+
+     
+
+    </div>
+
+    <br>
+    
+      <div class="example-button-row">
+          <button mat-raised-button color="primary" type="submit" [disabled]="scoreForm.invalid">Update</button>
+          <button type ="button" mat-raised-button color="accent" (click)="clearForm()">Clear</button>
+      </div>
+  </form>
+  
 </div>
+
 

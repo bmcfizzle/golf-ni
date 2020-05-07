@@ -7,11 +7,11 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['inline-edit.component.scss'],
   template: `
     <form (ngSubmit)="onSubmit()">
-      <div class="mat-subheading-2">Add a comment</div>
+      <div class="mat-subheading-2">Add score</div>
       
       <mat-form-field>
-        <input matInput maxLength="140" name="comment" [(ngModel)]="comment">
-        <mat-hint align="end">{{comment?.length || 0}}/140</mat-hint>
+        <input matInput type = "number" maxLength="2" name="comment" [(ngModel)]="comment">
+        <mat-hint align="end">{{comment?.length || 0}}/2</mat-hint>
       </mat-form-field>
 
       <div class="actions">

@@ -1,5 +1,5 @@
 import { Hole } from './hole';
 
-export interface Holes{
+export interface Scorecard{
     holes: Hole[];
 }

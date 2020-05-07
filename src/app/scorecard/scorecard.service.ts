@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError, of} from 'rxjs';
-import { Hole } from '../models/hole';
-import { Holes } from '../models/holes';
+import { Scorecard } from '../models/scorecard';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -25,10 +24,11 @@ export class ScorecardService {
 
   }
 
-  getScorecard(holes: Holes): Observable<Holes> {
-    let body = JSON.stringify(holes);
+  getScorecard(scorecard: Scorecard, handicap: number): Observable<Scorecard> {
+    const url = `${this.scorecardURL}/${handicap}`;
+    let body = JSON.stringify(scorecard);
     console.log(body);
-    return this.http.post<Holes>(this.scorecardURL, body, httpOptions).pipe(
+    return this.http.post<Scorecard>(url, body, httpOptions).pipe(
       catchError(this.handleError)
     );
   }
