@@ -82,10 +82,16 @@
             Please enter a handicap
           </mat-error>
         </mat-form-field>
+        <span style = "color: red">
+          <a [routerLink]="" (click)="clearHandicap()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+        </span>
       </mat-grid-tile>
+     
       </mat-grid-list>
 
-     
+      
 
     </div>
 

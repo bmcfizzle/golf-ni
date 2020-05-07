@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { InlineEditComponent } from './inline-edit/inline-edit.component';
 import { AppMaterialModules } from './material.module';
+import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { AppMaterialModules } from './material.module';
     AppComponent,
     ScorecardComponent,
     InlineEditComponent,
+    ProgressSpinnerComponent,
     
   ],
   imports: [
@@ -41,6 +43,7 @@ import { AppMaterialModules } from './material.module';
     
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ProgressSpinnerComponent]
 })
 export class AppModule { }

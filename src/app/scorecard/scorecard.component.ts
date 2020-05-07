@@ -5,8 +5,9 @@ import { Scorecard } from '../models/scorecard';
 import { FormBuilder, FormGroup, FormArray} from '@angular/forms';
 import { ExampleDataSource } from './example-source-data';
 import { element } from 'protractor';
-import { ErrorStateMatcher } from '@angular/material';
+import { ErrorStateMatcher, MatDialog, MatDialogRef } from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
 
 @Component({
   selector: 'app-scorecard',
@@ -40,7 +41,7 @@ export class ScorecardComponent implements OnInit {
     this.dataSource.update(copy);
   }
 
-  constructor(private service: ScorecardService, private fb: FormBuilder) { }
+  constructor(private service: ScorecardService, private fb: FormBuilder, private dialog: MatDialog) { }
 
   ngOnInit() {
 
@@ -52,8 +53,12 @@ export class ScorecardComponent implements OnInit {
 
   obtainScore() {
 
-    console.log("Obtain score clicked")
-    
+    console.log("Obtain score clicked");
+
+    let dialogRef: MatDialogRef<ProgressSpinnerComponent> = this.dialog.open(ProgressSpinnerComponent
+      ,{panelClass: 'transparent',
+    disableClose: true});
+
     const handicap = +this.scoreForm.controls.handicap.value;
     console.log(`handicap value is: ${handicap}`);
 
@@ -61,10 +66,15 @@ export class ScorecardComponent implements OnInit {
 
     this.service.getScorecard(this.holeCargo, handicap).subscribe(scorecard => {
       this.dataSource = new ExampleDataSource(scorecard.holes);
+      dialogRef.close();
 
     });
 
 
+  }
+
+  clearHandicap(){
+    this.scoreForm.reset();
   }
 
   clearForm() {
