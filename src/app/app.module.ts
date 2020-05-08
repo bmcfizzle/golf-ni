@@ -15,6 +15,7 @@ import { SatPopoverModule } from '@ncstate/sat-popover';
 import { InlineEditComponent } from './inline-edit/inline-edit.component';
 import { AppMaterialModules } from './material.module';
 import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.co
     ScorecardComponent,
     InlineEditComponent,
     ProgressSpinnerComponent,
+    HomeComponent,
     
   ],
   imports: [

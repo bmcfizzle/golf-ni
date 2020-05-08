@@ -8,6 +8,8 @@ import { element } from 'protractor';
 import { ErrorStateMatcher, MatDialog, MatDialogRef } from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
+import { Course } from '../models/course';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-scorecard',
@@ -18,18 +20,12 @@ export class ScorecardComponent implements OnInit {
 
   scoreForm: FormGroup;
   matcher = new MyErrorStateMatcher();
+  course: Course;
 
   holeCargo: Scorecard = { holes: [] };
-  initialData: Hole[] = [
-    { hole: 1, par: 5, yardage: 543, strokeIndex: 14 },
-    { hole: 2, par: 3, yardage: 123, strokeIndex: 3 },
-    { hole: 3, par: 4, yardage: 432, strokeIndex: 12 },
-    { hole: 4, par: 4, yardage: 387, strokeIndex: 7 },
-    { hole: 5, par: 3, yardage: 112, strokeIndex: 11 }
-  ];
-
-
-  dataSource = new ExampleDataSource(this.initialData);
+  initialData: Hole[] = [];
+  
+  dataSource; 
 
   displayedColumns: string[] = ['hole', 'par', 'yardage', 'strokeIndex', 'netScore', 'points', 'score'];
 
@@ -41,15 +37,31 @@ export class ScorecardComponent implements OnInit {
     this.dataSource.update(copy);
   }
 
-  constructor(private service: ScorecardService, private fb: FormBuilder, private dialog: MatDialog) { }
+  constructor(private service: ScorecardService, 
+    private fb: FormBuilder, 
+    private dialog: MatDialog,
+    private route: ActivatedRoute,) { }
 
-  ngOnInit() {
+  
 
-    this.scoreForm = this.fb.group({
-      handicap: ['', [Validators.required, Validators.min(0), Validators.max(72)]]
-    });
-  }
+    ngOnInit(): void {
+      let dialogRef: MatDialogRef<ProgressSpinnerComponent> = this.dialog.open(ProgressSpinnerComponent
+        ,{panelClass: 'transparent',
+      disableClose: true});
+      this.route.paramMap.subscribe((params) => {
+        this.service.getCourse(params.get('id')).subscribe((c) => {
+          console.log(c);
+          this.course = c;
+          this.initialData = this.course.scorecard.holes;
+          this.dataSource = new ExampleDataSource(this.initialData);
+          dialogRef.close();
+        });
+      });
 
+      this.scoreForm = this.fb.group({
+        handicap: ['', [Validators.required, Validators.min(0), Validators.max(72)]]
+      });
+    }
 
   obtainScore() {
 
@@ -69,7 +81,6 @@ export class ScorecardComponent implements OnInit {
       dialogRef.close();
 
     });
-
 
   }
 

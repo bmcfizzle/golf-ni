@@ -1,0 +1,20 @@
+<mat-grid-list cols="2" rowHeight="1:1">
+    <mat-grid-tile *ngFor="let course of courses" >
+        <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>{{course.name}}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="https://www.tandridgegolfclub.com/media/1042/hole-03-5866.jpg" alt="Photo of course">
+            <mat-card-content>
+              </mat-card-content>
+            <mat-card-actions>
+              <button mat-button [routerLink]="['/scorecard', course.id]">Select</button>
+            </mat-card-actions>
+          </mat-card>
+    </mat-grid-tile>
+    
+  </mat-grid-list>
+
+
+

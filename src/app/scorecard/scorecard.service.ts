@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {catchError} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError, of} from 'rxjs';
 import { Scorecard } from '../models/scorecard';
+import { Course } from '../models/course';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -29,6 +30,23 @@ export class ScorecardService {
     let body = JSON.stringify(scorecard);
     console.log(body);
     return this.http.post<Scorecard>(url, body, httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getCourses(): Observable<Course[]> {
+    const url = `${this.scorecardURL}/courses/all`;
+    return this.http.get<Course[]>(url)
+      .pipe(
+       // tap(data => console.log('Courses: ', JSON.stringify(data))),
+        catchError(this.handleError)
+      );
+  }
+
+  getCourse(id): Observable<Course> {
+    const url = `${this.scorecardURL}/courses/${id}`;
+    return this.http.get<Course>(url).pipe(
+      tap(_ => console.log(`fetched Course id=${id}`)),
       catchError(this.handleError)
     );
   }
