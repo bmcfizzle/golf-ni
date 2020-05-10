@@ -1,6 +1,7 @@
 import {DataSource} from '@angular/cdk/collections';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Hole } from '../models/hole';
+import { MatPaginator } from '@angular/material';
 
 export class ExampleDataSource extends DataSource<any> {
 

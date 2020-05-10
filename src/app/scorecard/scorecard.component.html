@@ -1,6 +1,9 @@
 
 <div style="padding: 32px">
 
+  <h1 *ngIf="course" mat-display-1 style="text-align: center;">{{course.name}}</h1>
+  <h2 *ngIf="course" class="mat-h2" style="text-align: center;">{{course.scorecard.scorecardName}}</h2>
+
   <div class="example-container mat-elevation-z8">
     <mat-table #table [dataSource]="dataSource">
 
@@ -44,7 +47,7 @@
             {{element.score}}
           </ng-container>
           <span class="add-comment" *ngIf="!element.score">
-            Add a score
+            Add
           </span>
 
           <sat-popover [anchor]="anchor" (closed)="update(element, $event)">
@@ -53,7 +56,7 @@
         </mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
     

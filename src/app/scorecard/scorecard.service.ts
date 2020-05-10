@@ -38,7 +38,7 @@ export class ScorecardService {
     const url = `${this.scorecardURL}/courses/all`;
     return this.http.get<Course[]>(url)
       .pipe(
-       // tap(data => console.log('Courses: ', JSON.stringify(data))),
+        tap(data => console.log('Courses: ', JSON.stringify(data))),
         catchError(this.handleError)
       );
   }
