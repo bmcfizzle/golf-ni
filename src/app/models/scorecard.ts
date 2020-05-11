@@ -1,6 +1,11 @@
 import { Hole } from './hole';
 
-export interface Scorecard{
+export class Scorecard{
     scorecardName?: string;
-    holes: Hole[];
+    holes?: Hole[];
+    totalPar?: number;
+    totalYardage?: number;
+    totalPoints?: number;
+    totalNetscore?: number;
+    totalScore?: number;
 }

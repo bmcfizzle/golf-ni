@@ -2,6 +2,10 @@ table {
     width: 100%;
   }
 
+  mat-footer-row {
+    font-weight: bold;
+  }
+
   section {
     display: table;
     margin: 8px;
@@ -74,3 +78,7 @@ table {
   .add-comment {
     opacity: 0.4;
   }
+
+ 
+
+  

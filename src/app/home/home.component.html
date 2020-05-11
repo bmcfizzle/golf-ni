@@ -1,20 +1,21 @@
+<div style="background-image:url('assets/rcd.jpg');">
 <mat-grid-list cols="2" rowHeight="1:1">
     <mat-grid-tile *ngFor="let course of courses" >
         <mat-card class="example-card">
-            <mat-card-header>
-              <div mat-card-avatar class="example-header-image"></div>
+          <img mat-card-image src='{{course.imageURL}}' alt="Photo of course" height="250px">
+            <mat-card-title-group>
               <mat-card-title>{{course.name}}</mat-card-title>
-            </mat-card-header>
-            <img mat-card-image src='{{course.imageURL}}' alt="Photo of course">
+            </mat-card-title-group>
             <mat-card-content>
               </mat-card-content>
             <mat-card-actions>
-              <button mat-button [routerLink]="['/scorecard', course.id]">Select</button>
+              <button mat-button style="float:left;" [routerLink]="['/scorecard', course.id]">Select</button>
             </mat-card-actions>
           </mat-card>
     </mat-grid-tile>
     
   </mat-grid-list>
+</div>
 
 
 

@@ -11,35 +11,29 @@
       <ng-container matColumnDef="hole">
         <mat-header-cell *matHeaderCellDef> Hole </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.hole}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="par">
         <mat-header-cell *matHeaderCellDef> Par </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.par}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef> {{this.course.scorecard.totalPar}} </mat-footer-cell>
       </ng-container>
 
       <ng-container matColumnDef="yardage">
         <mat-header-cell *matHeaderCellDef> Yardage </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.yardage}} </mat-cell>
+         <mat-footer-cell *matFooterCellDef> {{this.course.scorecard.totalYardage}} </mat-footer-cell>
       </ng-container>
 
       <ng-container matColumnDef="strokeIndex">
         <mat-header-cell *matHeaderCellDef> Stroke index </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.strokeIndex}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
       </ng-container>
 
-      <ng-container matColumnDef="netScore">
-        <mat-header-cell *matHeaderCellDef> Net Score </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.netScore}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="points">
-        <mat-header-cell *matHeaderCellDef> Points </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.points}} </mat-cell>
-      </ng-container>
-
-      <!-- Comment Column -->
+      <!-- Gross Score Column -->
       <ng-container matColumnDef="score">
         <mat-header-cell *matHeaderCellDef> Score </mat-header-cell>
         <mat-cell *matCellDef="let element" satPopoverAnchor #anchor=satPopoverAnchor (click)="anchor.popover.toggle()">
@@ -54,12 +48,27 @@
             <inline-edit [value]="element.score"></inline-edit>
           </sat-popover>
         </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{this.scoreCard.totalScore}}</mat-footer-cell>
       </ng-container>
+
+      <ng-container matColumnDef="netScore">
+        <mat-header-cell *matHeaderCellDef> Net Score </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.netScore}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{this.scoreCard.totalNetscore}} </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="points">
+        <mat-header-cell *matHeaderCellDef> Points </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.points}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef> {{this.scoreCard.totalPoints}} </mat-footer-cell>
+      </ng-container>
+
 
       <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
     </mat-table>
-    
+
   </div>
 
     <br><br>
@@ -71,7 +80,7 @@
 
       <mat-grid-list cols="2" rowHeight="4:1">
         <mat-grid-tile>Please enter your handicap: </mat-grid-tile>
-        <mat-grid-tile> 
+        <mat-grid-tile>
           <mat-form-field appearance="standard">
           <mat-label>Handicap</mat-label>
           <input matInput type="number" formControlName="handicap" [errorStateMatcher]="matcher">
@@ -91,21 +100,21 @@
           </a>
         </span>
       </mat-grid-tile>
-     
+
       </mat-grid-list>
 
-      
+
 
     </div>
 
     <br>
-    
+
       <div class="example-button-row">
           <button mat-raised-button color="primary" type="submit" [disabled]="scoreForm.invalid">Update</button>
           <button type ="button" mat-raised-button color="accent" (click)="clearForm()">Clear</button>
       </div>
   </form>
-  
+
 </div>
 
 
