@@ -1,4 +1,5 @@
 
+  
   <mat-card class="example-card">
     <mat-card-header>
       <mat-card-title>{{course.name}}</mat-card-title>
@@ -6,61 +7,64 @@
     </mat-card-header>
     <mat-card-content>
       <div class="example-container mat-elevation-z8">
+        <form (ngSubmit)="obtainScore()"
+        [formGroup]="scoreForm">
         <mat-table #table [dataSource]="dataSource">
 
           <!-- Name Column -->
           <ng-container matColumnDef="hole">
             <mat-header-cell *matHeaderCellDef> Hole </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.hole}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.get('hole').value}} </mat-cell>
             <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
           </ng-container>
 
           <!-- Symbol Column -->
           <ng-container matColumnDef="par">
             <mat-header-cell *matHeaderCellDef> Par </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.par}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.get('par').value}}</mat-cell>
             <mat-footer-cell *matFooterCellDef> {{this.course.scorecard.totalPar}} </mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="yardage">
             <mat-header-cell *matHeaderCellDef> Yardage </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.yardage}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.get('yardage').value}} </mat-cell>
             <mat-footer-cell *matFooterCellDef> {{this.course.scorecard.totalYardage}} </mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="strokeIndex">
             <mat-header-cell *matHeaderCellDef> Stroke index </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.strokeIndex}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.get('strokeIndex').value}} </mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
           </ng-container>
 
           <!-- Gross Score Column -->
           <ng-container matColumnDef="score">
-            <mat-header-cell *matHeaderCellDef> Score </mat-header-cell>
-            <mat-cell *matCellDef="let element" satPopoverAnchor #anchor=satPopoverAnchor (click)="anchor.popover.toggle()">
-              <ng-container *ngIf="element.score">
+            <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
+            <mat-cell *matCellDef="let element" [formGroup]="element"> 
+            <mat-form-field >
+              <input matInput type="number" formControlName="score">
+            </mat-form-field>{{element.get('score').value}} </mat-cell>
+            <!-- <mat-cell *matCellDef="let element" satPopoverAnchor #anchor=satPopoverAnchor (click)="anchor.popover.toggle()"> -->
+              
+              <!-- <ng-container *ngIf="element.score">
                 {{element.score}}
               </ng-container>
               <span class="add-comment" *ngIf="!element.score">
-            Add
-          </span>
-
-              <sat-popover [anchor]="anchor" (closed)="update(element, $event)">
-                <inline-edit [value]="element.score"></inline-edit>
-              </sat-popover>
-            </mat-cell>
+            Add -->
+          
+            
             <mat-footer-cell *matFooterCellDef>{{this.scoreCard.totalScore}}</mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="netScore">
             <mat-header-cell *matHeaderCellDef> Net Score </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.netScore}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.get('netScore').value}} </mat-cell>
             <mat-footer-cell *matFooterCellDef>{{this.scoreCard.totalNetscore}} </mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="points">
             <mat-header-cell *matHeaderCellDef> Points </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.points}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.get('points').value}} </mat-cell>
             <mat-footer-cell *matFooterCellDef> {{this.scoreCard.totalPoints}} </mat-footer-cell>
           </ng-container>
 
@@ -70,10 +74,9 @@
           <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
         </mat-table>
 
-      </div>
-      <div class="example-container"[class.mat-elevation-z8]="true">
-        <form (ngSubmit)="obtainScore()"
-              [formGroup]="scoreForm">
+    
+   
+       
           <mat-grid-list cols="2" rowHeight="4:1">
             <mat-grid-tile>Please enter your handicap: </mat-grid-tile>
             <mat-grid-tile>
@@ -99,8 +102,9 @@
             </mat-grid-tile>
           </mat-grid-list>
           <div class="example-button-row" style="text-align: right;">
-            <button mat-raised-button color="primary" type="submit" [disabled]="scoreForm.invalid">Calculate</button>
-            <button type ="button" mat-raised-button color="accent" (click)="clearForm()">Clear</button>
+            <button mat-raised-button color="primary" type="submit" >Calculate</button>
+            // [disabled]="scoreForm.invalid"
+            <button type ="button" mat-raised-button color="accent">Clear</button>
           </div>
         </form>
       </div>

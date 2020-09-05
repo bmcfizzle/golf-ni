@@ -26,6 +26,7 @@ export class ScorecardComponent implements OnInit {
       totalPar: 0
     }
   };
+  holes: Hole[] = [];
   holeCargo: Scorecard = {holes: []};
   scoreCard: Scorecard = {
     holes: [],
@@ -33,18 +34,11 @@ export class ScorecardComponent implements OnInit {
     totalNetscore: 0,
    totalPoints: 0
   };
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['hole', 'par', 'yardage', 'strokeIndex', 'score', 'netScore', 'points'];
 
-  update(hole: Hole, score: number) {
-    if (score == null) {
-      return;
-    }
-    // copy and mutate
-    const copy = this.dataSource.data().slice();
-    hole.score = score;
-    this.dataSource.update(copy);
-  }
+
+
 
   constructor(private service: ScorecardService,
               private fb: FormBuilder,
@@ -60,17 +54,27 @@ export class ScorecardComponent implements OnInit {
         disableClose: true
       });
 
+    
+
+    this.scoreForm = this.fb.group({
+      handicap: ['', [Validators.required, Validators.min(0), Validators.max(72)]],
+      holes: this.fb.array([])
+    });
+
     this.route.paramMap.subscribe((params) => {
       this.service.getCourse(params.get('id')).subscribe((c) => {
         this.course = c;
-        this.dataSource = new ExampleDataSource(this.course.scorecard.holes);
+        this.service.getCourseHolesAsFormArray(params.get('id')).subscribe(holes => {
+          this.scoreForm.setControl('holes', holes);
+          this.dataSource = new MatTableDataSource((this.scoreForm.get('holes')as FormArray).controls);
+        })
         dialogRef.close();
       });
     });
 
-    this.scoreForm = this.fb.group({
-      handicap: ['', [Validators.required, Validators.min(0), Validators.max(72)]]
-    });
+   
+
+
   }
 
   obtainScore() {
@@ -81,10 +85,10 @@ export class ScorecardComponent implements OnInit {
         disableClose: true
       });
     const handicap = +this.scoreForm.controls.handicap.value;
-    this.holeCargo.holes = {...this.holeCargo.holes, ...this.dataSource.data()};
+    this.holeCargo.holes = {...this.holeCargo.holes, ...this.scoreForm.controls.holes.value};
 
     this.service.getScorecard(this.holeCargo, handicap).subscribe(scorecard => {
-      this.dataSource = new ExampleDataSource(scorecard.holes);
+     this.scoreForm.get('holes').patchValue(scorecard.holes);
       this.scoreCard.totalNetscore = scorecard.totalNetscore;
       this.scoreCard.totalPoints = scorecard.totalPoints;
       this.scoreCard.totalScore = scorecard.totalScore;
@@ -96,18 +100,6 @@ export class ScorecardComponent implements OnInit {
     this.scoreForm.reset();
   }
 
-  clearForm() {
-    this.dataSource.data().map(
-      (hole) => {
-        hole.netScore = null;
-        hole.points = null;
-        hole.score = null;
-        this.scoreCard.totalScore = 0;
-        this.scoreCard.totalNetscore = 0;
-        this.scoreCard.totalPoints = 0;
-      }
-    );
-  }
 }
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
