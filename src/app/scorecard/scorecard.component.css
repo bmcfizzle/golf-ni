@@ -2,35 +2,41 @@ table {
     width: 100%;
   }
 
+  mat-footer-row {
+    font-weight: bold;
+  }
+
   section {
     display: table;
     margin: 8px;
   }
-  
+
   .example-label {
     display: table-cell;
     font-size: 14px;
     margin-left: 8px;
     width: 120px;
   }
-  
+
   .example-button-row {
-    display: table-cell;
-    float: right;
-  
+    display: flex;
+    justify-content: flex-end;
+
   }
-  
+
   .example-button-row button {
     display: table-cell;
     margin-right: 8px;
+    justify-content: flex-end;
+
   }
-  
+
   .example-flex-container {
     display: flex;
     justify-content: space-between;
     width: 480px;
   }
-  
+
   .example-button-container {
     display: flex;
     justify-content: center;
@@ -47,30 +53,33 @@ table {
     padding: 16px;
   margin-bottom: 16px;
   }
-  
+
   .mat-table {
     overflow: auto;
     max-height: 500px;
   }
-  
+
   .mat-row {
     align-items: stretch;
   }
-  
+
   .mat-cell {
       display: flex;
       align-items: center;
   }
-  
-  
+
+
   .mat-column-symbol, .mat-column-name {
     max-width: 160px;
   }
-  
+
   .mat-cell.mat-column-score {
     cursor: pointer;
   }
-  
+
   .add-comment {
     opacity: 0.4;
   }
+
+
+
