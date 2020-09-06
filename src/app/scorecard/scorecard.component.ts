@@ -26,19 +26,16 @@ export class ScorecardComponent implements OnInit {
       totalPar: 0
     }
   };
-  holes: Hole[] = [];
-  holeCargo: Scorecard = {holes: []};
+ 
   scoreCard: Scorecard = {
     holes: [],
     totalScore: 0,
     totalNetscore: 0,
    totalPoints: 0
   };
+
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['hole', 'par', 'yardage', 'strokeIndex', 'score', 'netScore', 'points'];
-
-
-
 
   constructor(private service: ScorecardService,
               private fb: FormBuilder,
@@ -53,8 +50,7 @@ export class ScorecardComponent implements OnInit {
         panelClass: 'transparent',
         disableClose: true
       });
-
-    
+ 
 
     this.scoreForm = this.fb.group({
       handicap: ['', [Validators.required, Validators.min(0), Validators.max(72)]],
@@ -71,10 +67,6 @@ export class ScorecardComponent implements OnInit {
         dialogRef.close();
       });
     });
-
-   
-
-
   }
 
   obtainScore() {
@@ -85,14 +77,14 @@ export class ScorecardComponent implements OnInit {
         disableClose: true
       });
     const handicap = +this.scoreForm.controls.handicap.value;
-    this.holeCargo.holes = {...this.holeCargo.holes, ...this.scoreForm.controls.holes.value};
-
-    this.service.getScorecard(this.holeCargo, handicap).subscribe(scorecard => {
-     this.scoreForm.get('holes').patchValue(scorecard.holes);
-      this.scoreCard.totalNetscore = scorecard.totalNetscore;
-      this.scoreCard.totalPoints = scorecard.totalPoints;
-      this.scoreCard.totalScore = scorecard.totalScore;
-      dialogRef.close();
+    this.scoreCard.holes = {...this.scoreCard.holes, ...this.scoreForm.controls.holes.value};
+    
+    this.service.getScorecard(this.scoreCard, handicap).subscribe(processedScorecard => {
+     this.scoreForm.get('holes').patchValue(processedScorecard.holes);
+     this.scoreCard.totalNetscore = processedScorecard.totalNetscore;
+     this.scoreCard.totalPoints = processedScorecard.totalPoints;
+     this.scoreCard.totalScore = processedScorecard.totalScore;
+     dialogRef.close();
     });
   }
 
