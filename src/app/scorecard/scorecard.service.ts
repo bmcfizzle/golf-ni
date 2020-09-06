@@ -4,8 +4,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError, of} from 'rxjs';
 import { Scorecard } from '../models/scorecard';
 import { Course } from '../models/course';
-import { FormArray } from '@angular/forms';
-import { Hole } from '../models/hole';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -51,16 +49,6 @@ export class ScorecardService {
       tap(_ => console.log(`fetched Course id=${id}`)),
       catchError(this.handleError)
     );
-  }
-
-  getCourseHolesAsFormArray(id): Observable<FormArray> {
-    const url = `${this.scorecardURL}/courses/${id}`;
-    return this.http.get<Course>(url).pipe(
-      map((course: Course) => {
-        const holeTester = course.scorecard.holes.map(Hole.asFormGroup);
-        return new FormArray(holeTester);
-      }));
-      
   }
 
   private handleError(err: any) {
