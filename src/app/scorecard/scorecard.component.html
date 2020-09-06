@@ -39,10 +39,10 @@
 
           <!-- Gross Score Column -->
           <ng-container matColumnDef="score">
-            <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Score </mat-header-cell>
             <mat-cell *matCellDef="let element" [formGroup]="element"> 
-            <mat-form-field >
-              <input matInput type="number" formControlName="score">
+            <mat-form-field [style.width.px]=25>
+              <input matInput formControlName="score">
             </mat-form-field></mat-cell>
             <!-- <mat-cell *matCellDef="let element" satPopoverAnchor #anchor=satPopoverAnchor (click)="anchor.popover.toggle()"> -->
               
@@ -102,9 +102,9 @@
             </mat-grid-tile>
           </mat-grid-list>
           <div class="example-button-row" style="text-align: right;">
-            <button mat-raised-button color="primary" type="submit" >Calculate</button>
-             <!-- [disabled]="scoreForm.invalid" -->
-            <button type ="button" mat-raised-button color="accent">Clear</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="scoreForm.invalid">Calculate</button>
+             
+            <button type ="button" mat-raised-button color="accent" (click)="clearScores()">Clear</button>
           </div>
         </form>
       </div>

@@ -86,13 +86,21 @@ export class ScorecardComponent implements OnInit {
   }
 
   clearHandicap() {
-    this.scoreForm.reset();
+    this.scoreForm.get('handicap').setValue('');
   }
 
   getCourseHolesAsFormArray(course: Course): FormArray {
-    return new FormArray (course.scorecard.holes.map(Hole.asFormGroup));
+    return new FormArray(course.scorecard.holes.map(Hole.asFormGroup));
   }
-  
+
+  clearScores() {
+    (this.scoreForm.get('holes') as FormArray).controls.forEach(hole => hole.patchValue({ score: '', netScore: '', points: ''}));
+    this.scoreCard.totalNetscore = 0;
+    this.scoreCard.totalPoints = 0;
+    this.scoreCard.totalScore = 0;
+    this.clearHandicap();
+  }
+
 }
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
