@@ -1,9 +1,7 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {Hole} from '../models/hole';
+import {Component, OnInit} from '@angular/core';
 import {ScorecardService} from './scorecard.service';
 import {Scorecard} from '../models/scorecard';
 import {FormBuilder, FormGroup, FormArray} from '@angular/forms';
-import {ExampleDataSource} from './example-source-data';
 import {MatDialogRef, MatDialog, ErrorStateMatcher, MatPaginator, PageEvent, MatTableDataSource} from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.component';
