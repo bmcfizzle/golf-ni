@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, tap, map} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError, of} from 'rxjs';
 import { Scorecard } from '../models/scorecard';

@@ -1,14 +1,13 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {Hole} from '../models/hole';
-import {ScorecardService} from './scorecard.service';
-import {Scorecard} from '../models/scorecard';
-import {FormBuilder, FormGroup, FormArray} from '@angular/forms';
-import {ExampleDataSource} from './example-source-data';
-import {MatDialogRef, MatDialog, ErrorStateMatcher, MatPaginator, PageEvent, MatTableDataSource} from '@angular/material';
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ProgressSpinnerComponent} from '../progress-spinner/progress-spinner.component';
-import {Course} from '../models/course';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ScorecardService } from './scorecard.service';
+import { Scorecard } from '../models/scorecard';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { MatDialogRef, MatDialog, ErrorStateMatcher, MatPaginator, PageEvent, MatTableDataSource } from '@angular/material';
+import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { ProgressSpinnerComponent } from '../progress-spinner/progress-spinner.component';
+import { Course } from '../models/course';
+import { ActivatedRoute } from '@angular/router';
+import { Hole } from '../models/hole';
 
 @Component({
   selector: 'app-scorecard',
@@ -26,30 +25,21 @@ export class ScorecardComponent implements OnInit {
       totalPar: 0
     }
   };
-  holeCargo: Scorecard = {holes: []};
+
   scoreCard: Scorecard = {
     holes: [],
     totalScore: 0,
     totalNetscore: 0,
-   totalPoints: 0
+    totalPoints: 0
   };
-  dataSource;
+
+  dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['hole', 'par', 'yardage', 'strokeIndex', 'score', 'netScore', 'points'];
 
-  update(hole: Hole, score: number) {
-    if (score == null) {
-      return;
-    }
-    // copy and mutate
-    const copy = this.dataSource.data().slice();
-    hole.score = score;
-    this.dataSource.update(copy);
-  }
-
   constructor(private service: ScorecardService,
-              private fb: FormBuilder,
-              private dialog: MatDialog,
-              private route: ActivatedRoute) {
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -60,16 +50,19 @@ export class ScorecardComponent implements OnInit {
         disableClose: true
       });
 
+
+    this.scoreForm = this.fb.group({
+      handicap: ['', [Validators.required, Validators.min(0), Validators.max(72)]],
+      holes: this.fb.array([])
+    });
+
     this.route.paramMap.subscribe((params) => {
       this.service.getCourse(params.get('id')).subscribe((c) => {
         this.course = c;
-        this.dataSource = new ExampleDataSource(this.course.scorecard.holes);
+        this.scoreForm.setControl('holes', this.getCourseHolesAsFormArray(this.course));
+        this.dataSource = new MatTableDataSource((this.scoreForm.get('holes') as FormArray).controls);
         dialogRef.close();
       });
-    });
-
-    this.scoreForm = this.fb.group({
-      handicap: ['', [Validators.required, Validators.min(0), Validators.max(72)]]
     });
   }
 
@@ -81,33 +74,33 @@ export class ScorecardComponent implements OnInit {
         disableClose: true
       });
     const handicap = +this.scoreForm.controls.handicap.value;
-    this.holeCargo.holes = {...this.holeCargo.holes, ...this.dataSource.data()};
+    this.scoreCard.holes = { ...this.scoreCard.holes, ...this.scoreForm.controls.holes.value };
 
-    this.service.getScorecard(this.holeCargo, handicap).subscribe(scorecard => {
-      this.dataSource = new ExampleDataSource(scorecard.holes);
-      this.scoreCard.totalNetscore = scorecard.totalNetscore;
-      this.scoreCard.totalPoints = scorecard.totalPoints;
-      this.scoreCard.totalScore = scorecard.totalScore;
+    this.service.getScorecard(this.scoreCard, handicap).subscribe(processedScorecard => {
+      this.scoreForm.get('holes').patchValue(processedScorecard.holes);
+      this.scoreCard.totalNetscore = processedScorecard.totalNetscore;
+      this.scoreCard.totalPoints = processedScorecard.totalPoints;
+      this.scoreCard.totalScore = processedScorecard.totalScore;
       dialogRef.close();
     });
   }
 
   clearHandicap() {
-    this.scoreForm.reset();
+    this.scoreForm.get('handicap').setValue('');
   }
 
-  clearForm() {
-    this.dataSource.data().map(
-      (hole) => {
-        hole.netScore = null;
-        hole.points = null;
-        hole.score = null;
-        this.scoreCard.totalScore = 0;
-        this.scoreCard.totalNetscore = 0;
-        this.scoreCard.totalPoints = 0;
-      }
-    );
+  getCourseHolesAsFormArray(course: Course): FormArray {
+    return new FormArray(course.scorecard.holes.map(Hole.asFormGroup));
   }
+
+  clearScores() {
+    (this.scoreForm.get('holes') as FormArray).controls.forEach(hole => hole.patchValue({ score: '', netScore: '', points: ''}));
+    this.scoreCard.totalNetscore = 0;
+    this.scoreCard.totalPoints = 0;
+    this.scoreCard.totalScore = 0;
+    this.clearHandicap();
+  }
+
 }
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {

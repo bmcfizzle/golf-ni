@@ -63,11 +63,15 @@ table {
     align-items: stretch;
   }
 
-  .mat-cell {
+  .mat-header-cell {
       display: flex;
       align-items: center;
   }
 
+  .mat-cell {
+    display: flex;
+    align-items: center;
+}
 
   .mat-column-symbol, .mat-column-name {
     max-width: 160px;
@@ -81,5 +85,5 @@ table {
     opacity: 0.4;
   }
 
-
+  
 
